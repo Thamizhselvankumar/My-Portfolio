@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Thamizhselvan K — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #0d0d15;
+    --card: #13131e;
+    --accent: #00e5ff;
+    --accent2: #ff6b6b;
+    --accent3: #b8ff57;
+    --text: #e8e8f0;
+    --muted: #5a5a75;
+    --border: rgba(255,255,255,0.07);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── GEAR CANVAS ── */
+  #gear-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.13;
+    pointer-events: none;
+  }
+
+  /* ── NOISE ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: .45;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 3rem;
+    background: rgba(10,10,15,0.82);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+  }
+
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  nav, section, footer { position: relative; z-index: 10; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 6rem 3rem 3rem;
+    overflow: hidden;
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+  }
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 24px; height: 1px;
+    background: var(--accent);
+  }
+
+  .hero-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 8vw, 8rem);
+    line-height: .92;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    margin-bottom: 1.8rem;
+  }
+  .hero-name span {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--accent);
+  }
+
+  .hero-desc {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--muted);
+    max-width: 440px;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .btn-primary {
+    padding: .75rem 2rem;
+    background: var(--accent);
+    color: #000;
+    font-family: 'DM Mono', monospace;
+    font-size: .78rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,229,255,.35); }
+
+  .btn-ghost {
+    padding: .75rem 2rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: .78rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color .2s, color .2s;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  .hero-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-card {
+    background: rgba(19,19,30,0.88);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    width: 320px;
+    position: relative;
+    animation: float 5s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: 2rem;
+    width: 60px; height: 3px;
+    background: var(--accent);
+  }
+  .hero-card-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: .06em;
+    margin-bottom: .3rem;
+  }
+  .hero-card-role {
+    font-family: 'DM Mono', monospace;
+    font-size: .7rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.6rem;
+  }
+  .hero-card-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    color: var(--accent3);
+    line-height: 1;
+  }
+  .stat-label { font-size: .66rem; color: var(--muted); letter-spacing: .06em; margin-top: .2rem; }
+
+  /* ── SHARED ── */
+  section { padding: 6rem 3rem; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: .7rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: .8rem;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+  }
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 18px; height: 1px;
+    background: var(--accent);
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    letter-spacing: .03em;
+    line-height: 1;
+    margin-bottom: 3.5rem;
+  }
+
+  /* ── SKILLS ── */
+  #skills { background: rgba(13,13,21,0.92); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+  .skill-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 1.4rem 1.6rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color .25s, transform .25s;
+  }
+  .skill-item:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .skill-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 2px;
+    background: var(--accent);
+    transition: width .3s;
+  }
+  .skill-item:hover::after { width: 100%; }
+  .skill-icon { font-size: 1.8rem; margin-bottom: .7rem; }
+  .skill-name {
+    font-family: 'DM Mono', monospace;
+    font-size: .8rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  .expertise-row { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 3.5rem; }
+  .expertise-chip {
+    padding: .55rem 1.2rem;
+    border: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: .7rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition: color .2s, border-color .2s;
+  }
+  .expertise-chip:hover { color: var(--accent3); border-color: var(--accent3); }
+
+  /* ── EDUCATION ── */
+  #education { background: rgba(10,10,15,0.92); }
+
+  .edu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+  .edu-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    position: relative;
+    transition: border-color .25s, transform .25s;
+  }
+  .edu-card:hover { border-color: var(--accent2); transform: translateY(-4px); }
+  .edu-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 2rem;
+    width: 40px; height: 2px;
+    background: var(--accent2);
+  }
+  .edu-period {
+    font-family: 'DM Mono', monospace;
+    font-size: .65rem;
+    letter-spacing: .14em;
+    color: var(--accent2);
+    text-transform: uppercase;
+    margin-bottom: .6rem;
+  }
+  .edu-degree { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: .04em; margin-bottom: .3rem; }
+  .edu-school { font-size: .82rem; color: var(--muted); line-height: 1.4; }
+
+  /* ── PROJECT ── */
+  #project { background: rgba(13,13,21,0.92); }
+
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    max-width: 680px;
+    position: relative;
+    transition: border-color .25s;
+  }
+  .project-card:hover { border-color: var(--accent3); }
+  .project-card::after {
+    content: 'PROJECT';
+    position: absolute;
+    top: 1.5rem; right: 1.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: .6rem;
+    letter-spacing: .18em;
+    color: var(--accent3);
+    opacity: .45;
+  }
+  .project-name { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; letter-spacing: .04em; margin-bottom: .8rem; }
+  .project-desc { font-size: .92rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; }
+  .tech-tags { display: flex; gap: .6rem; flex-wrap: wrap; }
+  .tech-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: .65rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: .3rem .8rem;
+    border: 1px solid var(--accent3);
+    color: var(--accent3);
+  }
+
+  /* ── CERTIFICATION ── */
+  #certification { background: rgba(10,10,15,0.92); }
+
+  .cert-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    max-width: 720px;
+    transition: border-color .25s;
+  }
+  .cert-card:hover { border-color: var(--accent); }
+  .cert-card-glow {
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,229,255,.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cert-name { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: .04em; margin-bottom: .4rem; }
+  .cert-org {
+    font-family: 'DM Mono', monospace;
+    font-size: .7rem;
+    letter-spacing: .14em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+  }
+  .cert-desc { font-size: .9rem; color: var(--muted); line-height: 1.75; }
+  .cert-desc strong { color: var(--text); font-weight: 500; }
+
+  /* ── CONTACT ── */
+  #contact { text-align: center; background: rgba(10,10,15,0.95); overflow: hidden; }
+  #contact::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,229,255,.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .contact-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 7vw, 7rem);
+    letter-spacing: .03em;
+    line-height: .95;
+    margin-bottom: 1.5rem;
+  }
+  .contact-title span { color: var(--accent); }
+  .contact-sub { font-size: 1rem; color: var(--muted); margin-bottom: 2.5rem; }
+  .contact-grid { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+  .contact-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 1rem 1.8rem;
+    font-family: 'DM Mono', monospace;
+    font-size: .75rem;
+    letter-spacing: .08em;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    transition: border-color .2s, color .2s;
+  }
+  .contact-item:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Mono', monospace;
+    font-size: .65rem;
+    letter-spacing: .1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    background: rgba(10,10,15,0.98);
+  }
+
+  /* ── REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .65s ease, transform .65s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    #hero { grid-template-columns: 1fr; padding: 5rem 1.5rem 3rem; }
+    .hero-right { display: none; }
+    section { padding: 4rem 1.5rem; }
+    footer { flex-direction: column; gap: .6rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- GEAR CANVAS BACKGROUND -->
+<canvas id="gear-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">TK</div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#project">Project</a></li>
+    <li><a href="#certification">Certification</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Full Stack Developer</div>
+    <h1 class="hero-name">
+      THAMIZH<br><span>SELVAN</span><br>K
+    </h1>
+    <p class="hero-desc">
+      A highly motivated developer passionate about building dynamic web applications and clean, scalable solutions. Currently pursuing Full Stack Development certification.
+    </p>
+    <div class="hero-btns">
+      <a href="#project" class="btn-primary">View Projects</a>
+      <a href="#contact" class="btn-ghost">Get In Touch</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-card">
+      <div class="hero-card-name">Thamizhselvan K</div>
+      <div class="hero-card-role">Frontend Developer</div>
+      <div class="hero-card-stats">
+        <div class="stat">
+          <div class="stat-num">5+</div>
+          <div class="stat-label">Tech Skills</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">1</div>
+          <div class="stat-label">Live Project</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">B.Com</div>
+          <div class="stat-label">Graduate</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">2</div>
+          <div class="stat-label">Languages</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">What I Know</div>
+  <h2 class="section-title">SKILLS &amp;<br>TECHNOLOGIES</h2>
+  <div class="skills-grid reveal">
+    <div class="skill-item"><div class="skill-icon">🌐</div><div class="skill-name">HTML 5</div></div>
+    <div class="skill-item"><div class="skill-icon">🎨</div><div class="skill-name">CSS 3</div></div>
+    <div class="skill-item"><div class="skill-icon">⚡</div><div class="skill-name">JavaScript</div></div>
+    <div class="skill-item"><div class="skill-icon">☕</div><div class="skill-name">Java</div></div>
+    <div class="skill-item"><div class="skill-icon">🗄️</div><div class="skill-name">SQL</div></div>
+  </div>
+  <div class="expertise-row reveal">
+    <div class="expertise-chip">Problem Solving</div>
+    <div class="expertise-chip">Creativity</div>
+    <div class="expertise-chip">Decision Making</div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-label">Academic Background</div>
+  <h2 class="section-title">EDUCATION</h2>
+  <div class="edu-grid">
+    <div class="edu-card reveal">
+      <div class="edu-period">2021 — 2024</div>
+      <div class="edu-degree">Bachelor of Commerce</div>
+      <div class="edu-school">Sri Manakula Vinayagar Engineering College</div>
+    </div>
+    <div class="edu-card reveal">
+      <div class="edu-period">2020 — 2021</div>
+      <div class="edu-degree">HSC</div>
+      <div class="edu-school">Subramania Bharathi Higher Secondary School</div>
+    </div>
+    <div class="edu-card reveal">
+      <div class="edu-period">2018 — 2019</div>
+      <div class="edu-degree">SSLC</div>
+      <div class="edu-school">Subramania Bharathi Higher Secondary School</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT -->
+<section id="project">
+  <div class="section-label">What I Built</div>
+  <h2 class="section-title">PROJECTS</h2>
+  <div class="project-card reveal">
+    <div class="project-name">Myntra Clone</div>
+    <p class="project-desc">
+      Built a fully functional front-end replica of the popular e-commerce platform Myntra. Focused on recreating the UI with semantic markup, responsive layouts, and interactive JavaScript features including product browsing and cart interactions.
+    </p>
+    <div class="tech-tags">
+      <span class="tech-tag">HTML5</span>
+      <span class="tech-tag">CSS3</span>
+      <span class="tech-tag">JavaScript</span>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATION -->
+<section id="certification">
+  <div class="section-label">Credentials</div>
+  <h2 class="section-title">CERTIFICATION</h2>
+  <div class="cert-card reveal">
+    <div class="cert-card-glow"></div>
+    <div class="cert-name">Full Stack Development</div>
+    <div class="cert-org">Qspiders — In Progress</div>
+    <p class="cert-desc">
+      Currently pursuing an in-depth certification covering modern full-stack technologies.
+      <strong>HTML5 &amp; CSS3:</strong> Proficient in building responsive, semantic web pages.
+      <strong>JavaScript:</strong> Developed interactive web applications with DOM manipulation, form validation, and event handling.
+      <strong>Core Java:</strong> Solid foundation in object-oriented programming and algorithms for efficient back-end solutions.
+    </p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <h2 class="contact-title">LET'S<br><span>CONNECT</span></h2>
+  <p class="contact-sub">Open to opportunities, collaborations, and conversations.</p>
+  <div class="contact-grid">
+    <a href="mailto:thamizh0912@gmail.com" class="contact-item"><span>✉</span> thamizh0912@gmail.com</a>
+    <a href="tel:7806911296" class="contact-item"><span>☎</span> 7806911296</a>
+    <div class="contact-item"><span>📍</span> Sithalampet, Villupuram</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>© 2025 Thamizhselvan K</div>
+  <div>Designed &amp; Built with ♥</div>
+  <div>Tamil Nadu, India</div>
+</footer>
+
+<script>
+/* ══════════════════════════════════
+   GEAR MECHANISM CANVAS ANIMATION
+══════════════════════════════════ */
+const canvas = document.getElementById('gear-canvas');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// Gear configs — positions as fractions of viewport
+const gears = [
+  { x:0.10, y:0.20, r:120, teeth:20, speed: 0.003,   angle:0,   color:'#00e5ff' },
+  { x:0.32, y:0.18, r:74,  teeth:12, speed:-0.0048,  angle:0.4, color:'#00e5ff' },
+  { x:0.52, y:0.32, r:96,  teeth:16, speed: 0.0036,  angle:1.1, color:'#b8ff57' },
+  { x:0.76, y:0.22, r:58,  teeth:9,  speed:-0.006,   angle:0.8, color:'#00e5ff' },
+  { x:0.90, y:0.50, r:84,  teeth:14, speed: 0.0042,  angle:0.3, color:'#b8ff57' },
+  { x:0.68, y:0.72, r:105, teeth:17, speed:-0.003,   angle:1.5, color:'#00e5ff' },
+  { x:0.38, y:0.78, r:62,  teeth:10, speed: 0.0055,  angle:0.9, color:'#ff6b6b' },
+  { x:0.08, y:0.68, r:88,  teeth:14, speed:-0.0038,  angle:0.2, color:'#00e5ff' },
+  { x:0.50, y:0.58, r:48,  teeth:8,  speed: 0.007,   angle:1.8, color:'#b8ff57' },
+  { x:0.85, y:0.82, r:72,  teeth:12, speed:-0.0045,  angle:0.6, color:'#ff6b6b' },
+  { x:0.20, y:0.50, r:52,  teeth:8,  speed: 0.006,   angle:2.1, color:'#00e5ff' },
+  { x:0.60, y:0.90, r:65,  teeth:10, speed:-0.005,   angle:0.5, color:'#b8ff57' },
+];
+
+// Linkage rods between gears
+const rods = [
+  [0,1],[1,2],[2,3],[3,4],[4,9],[5,6],[6,7],[7,0],[2,8],[8,5],[10,7],[10,1],[11,6],[11,9]
+];
+
+function drawGear(g) {
+  const cx = g.x * canvas.width;
+  const cy = g.y * canvas.height;
+  const r      = g.r;
+  const teeth  = g.teeth;
+  const toothH = r * 0.22;
+  const innerR = r * 0.72;
+  const holeR  = r * 0.22;
+
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(g.angle);
+
+  ctx.strokeStyle = g.color;
+  ctx.lineWidth   = 1.3;
+
+  // Outer toothed ring
+  ctx.beginPath();
+  for (let i = 0; i < teeth; i++) {
+    const a0 = (i / teeth) * Math.PI * 2;
+    const a1 = ((i + 0.35) / teeth) * Math.PI * 2;
+    const a2 = ((i + 0.65) / teeth) * Math.PI * 2;
+    const a3 = ((i + 1)    / teeth) * Math.PI * 2;
+    ctx.lineTo(Math.cos(a0) * innerR,          Math.sin(a0) * innerR);
+    ctx.lineTo(Math.cos(a1) * (r + toothH),    Math.sin(a1) * (r + toothH));
+    ctx.lineTo(Math.cos(a2) * (r + toothH),    Math.sin(a2) * (r + toothH));
+    ctx.lineTo(Math.cos(a3) * innerR,          Math.sin(a3) * innerR);
+  }
+  ctx.closePath();
+  ctx.stroke();
+
+  // Pitch circle
+  ctx.beginPath();
+  ctx.arc(0, 0, innerR * 0.62, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // Hub
+  ctx.beginPath();
+  ctx.arc(0, 0, holeR, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // Spokes
+  for (let s = 0; s < 5; s++) {
+    const sa = (s / 5) * Math.PI * 2;
+    ctx.beginPath();
+    ctx.moveTo(Math.cos(sa) * holeR * 1.15, Math.sin(sa) * holeR * 1.15);
+    ctx.lineTo(Math.cos(sa) * innerR * 0.60, Math.sin(sa) * innerR * 0.60);
+    ctx.stroke();
+  }
+
+  ctx.restore();
+}
+
+function drawRod(a, b) {
+  ctx.beginPath();
+  ctx.moveTo(a.x * canvas.width,  a.y * canvas.height);
+  ctx.lineTo(b.x * canvas.width,  b.y * canvas.height);
+  ctx.strokeStyle = 'rgba(0,229,255,0.10)';
+  ctx.lineWidth   = 0.8;
+  ctx.setLineDash([4, 10]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Rods behind gears
+  rods.forEach(([a, b]) => drawRod(gears[a], gears[b]));
+
+  // Gears
+  gears.forEach(g => {
+    g.angle += g.speed;
+    drawGear(g);
+  });
+
+  requestAnimationFrame(animate);
+}
+animate();
+
+/* ══════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════ */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
